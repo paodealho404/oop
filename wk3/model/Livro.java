@@ -1,25 +1,27 @@
 package wk3.model;
 public class Livro {
-    String isbn;
-    String title;
-    String author;
-    int pages;
-    double valor;
-    boolean vendido;
-    Pessoa locador;
+    private String isbn;
+    private String title;
+    private String author;
+    private int pages;
+    private double valor;
+    private boolean vendido;
+    Pessoa comprador;
 
     public Livro() {
-        this.isbn = "";
-        this.title = "";
-        this.valor = 0;
-        this.author = "";
-        this.pages = 0;
-        this.vendido = false;
-        this.locador = null;
-        this.vendido = false;
+        this( "","", "", 0.0, 0, false, null);
     }
-    void setLocador(Pessoa locador) {
-        this.locador = locador;
+    public Livro(String isbn, String title, String author, Double valor, int pages, boolean vendido, Pessoa comprador) {
+        this.isbn = isbn;
+        this.title = title;
+        this.author = author;
+        this.valor = valor;
+        this.pages = pages;
+        this.vendido = vendido;
+        this.comprador = comprador;
+    }
+    public void setComprador(Pessoa comprador) {
+        this.comprador = comprador;
     }
     public void setTitle(String title) {
         this.title = title;
@@ -39,8 +41,8 @@ public class Livro {
     public void setVendido(boolean vendido) {
         this.vendido = vendido;
     }
-    public Pessoa getLocador() {
-        return locador;
+    public Pessoa getComprador() {
+        return comprador;
     }
     public double getValor() {
         return valor;
@@ -59,5 +61,18 @@ public class Livro {
     }
     public boolean getVendido() {
         return vendido;
+    }
+    public String toString()
+    {
+        String res = "{ ISBN: " + getIsbn() + ", AUTHOR: "+ getAuthor() + ", TITLE: " + getTitle() + ", PAGES: " +getPages() + ", VALOR: "+ getValor() + ", VENDIDO: ";
+        res+= getVendido() ? ("SIM"):("NÃO");
+        Pessoa comp = getComprador();
+        if(getVendido())
+        {
+            res+=", COMPRADOR: ";
+            res+= (comp != null) ? (comp.parseText()) : "AINDA NÃO FOI COMPRADO";
+        }
+        res+= " }";
+        return res;
     }
 }

@@ -2,14 +2,21 @@ package wk3.model;
 public class Pessoa{
     int idade;
     String cpf;
-    double carteira;
-    Livro aluguel;
+    double credito;
+    Livro compra;
     public Pessoa()
     {
-        this.idade = 0;
-        this.cpf = "";
-        this.carteira = 0;
-        this.aluguel = null;
+        this("",0,0.0, null);
+    }
+    public Pessoa(String cpf, int idade, double credito, Livro compra)
+    {
+        this.idade = idade;
+        this.cpf = cpf;
+        this.credito = credito;
+        this.compra = compra;
+    }
+    public double getCredito() {
+        return credito;
     }
     public String getCpf() {
         return cpf;
@@ -17,25 +24,45 @@ public class Pessoa{
     public int getIdade() {
         return idade;
     }
-    public Livro getAluguel() {
-        return aluguel;
-    }
-    public double getCarteira() {
-        return carteira;
-    }
     public void setCpf(String cpf) {
         this.cpf = cpf;
     }
-    public void setAluguel(Livro aluguel) {
-        this.aluguel = aluguel;
-    } 
     public void setIdade(int idade) {
         this.idade = idade;
     }
-    public void setCarteira(double carteira) {
-        this.carteira = carteira;
+    public void setCredito(double credito) {
+        this.credito = credito;
     }
-    void pagar(double value) {
-        carteira-=value;
+    public Livro getCompra() {
+        return compra;
+    }
+    public void setCompra(Livro compra) {
+        this.compra = compra;
+    }
+    public void pagar(double value)
+    {
+        credito -= value;
+    }
+    public String parseText()
+    {
+        String result = "{ CPF: ";
+        result+= getCpf();
+        result+= ", IDADE: ";
+        result+= getIdade();
+        return result;
+    }
+    public String toString()
+    {
+        String result = "{ CPF: ";
+        result+= getCpf();
+        result+= ", IDADE: ";
+        result+= getIdade();
+        result+= ", CREDITO: ";
+        result+= ", LIVRO COMPRADO: ";
+        Livro a = getCompra();
+        result+= (a!=null) ? (a): ("AINDA NÃO EFETUOU COMPRAS");
+        result+=", SALDO: ";
+        result+= getCredito();
+        return result;
     }
 }

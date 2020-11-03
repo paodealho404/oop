@@ -25,18 +25,40 @@ public class Main{
         valor = Double.parseDouble(n.nextLine());
         lib.cadastrarLivro(isbn, title, author, pages, valor, false);
     }
+    public static void cadastrarFuncionario(Livraria lib, Scanner n)
+    {
+        String cpf, matricula;
+        double saldo, desconto;
+        int idade, armario;
+        System.out.println("Insira o CPF do funcionário> ");
+        cpf = n.nextLine();
+        System.out.println("\nInsira a idade do funcionário> ");
+        idade = Integer.parseInt(n.nextLine());
+        System.out.println("\nInsira a matricula do funcionário> ");
+        matricula = n.nextLine();
+        System.out.println("\nInsira o saldo do funcionário> ");
+        saldo = Double.parseDouble(n.nextLine());
+        System.out.println("\nInsira o número do armário do funcionário> ");
+        armario = Integer.parseInt(n.nextLine());
+        System.out.println("\nInsira o desconto base do funcionário> ");
+        desconto = Double.parseDouble(n.nextLine());
+        lib.cadastrarFuncionario(cpf, matricula, idade, armario, saldo, desconto);
+    }
     public static void cadastrarCliente(Livraria lib, Scanner n)
     {
         String cpf;
         int idade;
         double carteira;
+        double desconto;
         System.out.println("Insira o CPF do cliente> ");
         cpf = n.nextLine();
         System.out.println("\nInsira a idade do cliente> ");
         idade = Integer.parseInt(n.nextLine());
         System.out.println("\nInsira o saldo do cliente> ");
         carteira = Double.parseDouble(n.nextLine());
-        lib.cadastrarCliente(cpf, idade, carteira);
+        System.out.println("\nInsira o desconto base do cliente> ");
+        desconto = Double.parseDouble(n.nextLine());
+        lib.cadastrarCliente(cpf, idade, carteira, desconto);
     }
     public static void realizarVenda(Livraria lib, Scanner n) {
         String cpf, isbn;
@@ -60,11 +82,11 @@ public class Main{
                 lib.setNome(n.nextLine());
                 System.out.print("Insira o endereço: ");
                 lib.setEndereco(n.nextLine());
-                System.out.print("Insira a quantidade de usuários suportada pela livraria: ");
+                System.out.print("Insira a quantidade de usuários suportada pela livraria (usuários + funcionários): ");
                 int size;
                 size = Integer.parseInt(n.nextLine());
-                lib.setClientes(size);
-                lib.setLotacao_total_clientes(size);
+                lib.setCadastros(size);
+                lib.setLotacao_total_pessoas(size);
                 System.out.print("Insira a quantidade de livros suportada pela livraria: ");
                 size = Integer.parseInt(n.nextLine());
                 lib.setLivros(size);;
@@ -72,12 +94,14 @@ public class Main{
                 limpaTela();
                 do
                 {
-                    System.out.println("Sistema de Livraria "+ lib.getNome() +"!  Bem-Vindo(a)!\n\n");
+                    System.out.println("Sistema da Livraria "+ lib.getNome() +"!  Bem-Vindo(a)!\n\n");
                     System.out.println("Insira 1 para cadastrar um livro");
                     System.out.println("Insira 2 para cadastrar um cliente");
-                    System.out.println("Insira 3 para efetuar a compra de um livro por um cliente");
-                    System.out.println("Insira 4 para listar os livros disponíveis");
-                    System.out.println("Insira 5 para listar os clientes cadastrados");
+                    System.out.println("Insira 3 para cadastrar um funcionário");
+                    System.out.println("Insira 4 para efetuar a compra de um livro por um cliente");
+                    System.out.println("Insira 5 para listar os livros disponíveis");
+                    System.out.println("Insira 6 para listar os clientes cadastrados");
+                    System.out.println("Insira 7 para listar os funcionários cadastrados");
                     System.out.println("Insira 0 para sair do sistema");    
                     opt = Integer.parseInt(n.nextLine());
                     if(opt==1) 
@@ -94,25 +118,38 @@ public class Main{
                         limpaTela();
                     }   
                     if(opt==3) {
+                        cadastrarFuncionario(lib, n);
+                        System.out.println("Pressione enter para continuar...");
+                        n.nextLine();
+                        limpaTela();
+                    }
+                    if(opt==4) {
                         realizarVenda(lib , n);
                         System.out.println("Pressione enter para continuar...");
                         n.nextLine();
                         limpaTela();
                     }
-                    if(opt==4)
+                    if(opt==5)
                     {
                         lib.listarLivros();
                         System.out.println("Pressione enter para continuar...");
                         n.nextLine();
                         limpaTela();
                     }  
-                    if(opt==5)
+                    if(opt==6)
                     {
                         lib.listarClientes();
                         System.out.println("Pressione enter para continuar...");
                         n.nextLine();
                         limpaTela();
                     }     
+                    if(opt==7)
+                    {
+                        lib.listarFuncionarios();
+                        System.out.println("Pressione enter para continuar...");
+                        n.nextLine();
+                        limpaTela();
+                    }
                     limpaTela();  
                 }
                 while (opt!=0);
