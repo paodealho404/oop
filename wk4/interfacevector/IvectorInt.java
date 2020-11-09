@@ -1,4 +1,4 @@
-package wk4.interface_vector;
+package wk4.interfacevector;
 import wk4.model.IntVector;
 public interface IvectorInt {
     public IntVector scalarMultiplication(String x);
