@@ -1,6 +1,8 @@
 package wk4.model;
 
-public class IntVector extends AbstractVector{
+import wk4.interfacevector.IvectorInt;
+
+public class IntVector extends AbstractVector implements IvectorInt{
     int vector[];
     public IntVector(int size)
     {
@@ -32,14 +34,13 @@ public class IntVector extends AbstractVector{
         }
         return result;
     }
-    public int scalarProduct(IntVector vector)
+    public double scalarProduct(IntVector vector)
     {
-        IntVector result = new IntVector(this.getSize());
-        int x=0;
+        double result=0;
         for (int i = 0; i < this.getSize(); i++) {
-            x+= result.vector[i] = this.vector[i] * vector.vector[i];
+            result+= this.vector[i] * vector.vector[i];
         }
-        return x;
+        return result;
     }
     public IntVector opositeVector(){
         IntVector result = new IntVector(this.getSize());
@@ -61,7 +62,7 @@ public class IntVector extends AbstractVector{
     }
     public double getModulus(){
         double x=0;
-        for (int i = 0; i < getSize(); i++) {
+        for (int i = 0; i < this.getSize(); i++) {
             x+=Math.pow(vector[i], 2);
         }
         x = Math.sqrt(x);
