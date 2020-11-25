@@ -7,7 +7,7 @@ public class Administrador extends Usuario{
     {
         super(nome,email);
         setLogin(login);
-        setEmail(email);
+        setSenha(senha);
     }
     public String getLogin() {
         return login;
@@ -32,5 +32,21 @@ public class Administrador extends Usuario{
             System.out.println("Senha incorreta");
             return false;
         }
+    }
+    public void mudarStatusProjeto(String novo, Projeto p) {
+        if(novo.equals("Em andamento")) {
+            if(p.getValid() && p.getStatus().equals("Em elaboração") && p.getTitulo()!=null && p.getData_fim()!=null && p.getData_inicio()!=null
+        &&p.getValor_financiado()>=0 &&p.getAgencia_financiadora()!=null && p.getObjetivo()!=null && p.getDescricao()!=null && p.getParticipantes().size()>0) 
+        p.setStatus(novo);
+        }
+        else if(novo.equals("Concluído")) {
+            if(p.getPublicacoes().size()>0) p.setStatus(novo);
+            else System.out.println("Ainda não há publicações vinculadas a esse projeto");
+        }
+    }
+    public void cadastroProjetoLab(LabPesquisa lab, Projeto p) {
+        if(p.getValid() && p.getStatus().equals("Em elaboração") && p.getTitulo()!=null && p.getData_fim()!=null && p.getData_inicio()!=null
+        &&p.getValor_financiado()>=0 &&p.getAgencia_financiadora()!=null && p.getObjetivo()!=null && p.getDescricao()!=null && p.getParticipantes().size()>0) lab.addProjeto(p);
+        else System.out.println("Projeto inválido");
     }
 }

@@ -3,14 +3,19 @@ import java.util.Vector;
 public class Publicacao{
     private Vector<Colaborador> autores;
     private String titulo;
+    private String conferencia;
     private int ano_publicacao;
     private Projeto projeto;
-    public Publicacao(String titulo, int ano_publicacao, Projeto projeto, Vector<Colaborador> autores)
+    public Publicacao(String titulo, String conferencia, int ano_publicacao, Projeto projeto, Vector<Colaborador> autores)
     {
         this.ano_publicacao = ano_publicacao;
+        this.conferencia = conferencia;
         this.projeto = projeto;
         this.titulo = titulo;
         this.autores = autores;
+    }
+    public String getConferencia() {
+        return conferencia;
     }
     public int getAno_publicacao() {
         return ano_publicacao;
@@ -35,6 +40,9 @@ public class Publicacao{
     }
     public void setTitulo(String titulo) {
         this.titulo = titulo;
+    }
+    public void setConferencia(String conferencia) {
+        this.conferencia = conferencia;
     }
     public void addAutor(Colaborador autor)
     {

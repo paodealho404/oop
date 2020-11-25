@@ -8,14 +8,14 @@ public class Professor extends Colaborador{
     }
     @Override
     public String toString() {
-        return super.toString();
+        return "Professor| "+super.toString();
     }
     public void addOrientacao(Orientacao orientacao)
     {
         this.orientacao.add(orientacao);
     }
     public String professorInfo() {
-        String res = super.toString();
+        String res = "Professor| "+super.toString();
         res+=", Orientacoes: ";
         if(orientacao.size()>0) res+="{";
         else res+= "Nenhuma";
@@ -24,7 +24,6 @@ public class Professor extends Colaborador{
             if(i<orientacao.size()-1) res+=", ";
             else res+="}";
         }
-        res+=" }";
         return res;
     }
 }

@@ -1,18 +1,20 @@
 package project.model;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Vector;
+import java.util.Date;
 public class Projeto{
     private String titulo;
-    private Date data_inicio;
-    private Date data_fim;
+    private LocalDate data_inicio;
+    private LocalDate data_fim;
     private String agencia_financiadora;
     private double valor_financiado;
     private String objetivo;
     private String descricao;
     private Vector<Colaborador> participantes;
+    private Vector<Publicacao> publicacoes;
     private boolean valid;
     private String status;
-    public Projeto(String titulo, Date data_inicio, Date data_fim, String agencia_financiadora, double valor_financiado, String objetivo, String descricao, Vector<Colaborador> participantes)
+    public Projeto(String titulo, LocalDate data_inicio, LocalDate data_fim, String agencia_financiadora, double valor_financiado, String objetivo, String descricao, Vector<Colaborador> participantes)
     {
         this.titulo = titulo;
         this.data_fim = data_fim;
@@ -22,6 +24,7 @@ public class Projeto{
         this.objetivo = objetivo;
         this.descricao = descricao;
         this.participantes = participantes;
+        this.publicacoes = new Vector<Publicacao>();
         this.valid = checkValid();
     }
     public boolean getValid() {
@@ -30,10 +33,10 @@ public class Projeto{
     public String getAgencia_financiadora() {
         return agencia_financiadora;
     }
-    public Date getData_fim() {
+    public LocalDate getData_fim() {
         return data_fim;
     }
-    public Date getData_inicio() {
+    public LocalDate getData_inicio() {
         return data_inicio;
     }
     public String getDescricao() {
@@ -57,10 +60,10 @@ public class Projeto{
     public void setAgencia_financiadora(String agencia_financiadora) {
         this.agencia_financiadora = agencia_financiadora;
     }
-    public void setData_fim(Date data_fim) {
+    public void setData_fim(LocalDate data_fim) {
         this.data_fim = data_fim;
     }
-    public void setData_inicio(Date data_inicio) {
+    public void setData_inicio(LocalDate data_inicio) {
         this.data_inicio = data_inicio;
     }
     public void setDescricao(String descricao) {
@@ -84,21 +87,29 @@ public class Projeto{
     public void setStatus(String status) {
         this.status = status;
     }
-    public void changeStatus(){
-        if(this.titulo!=null && this.data_inicio!=null && this.data_fim==null && this.valid && this.agencia_financiadora!=null && this.valor_financiado!=-1 && this.descricao!=null && this.participantes!=null)
-        setStatus("Em andamento");
-        else if(this.titulo!=null && this.data_inicio!=null && this.data_fim!=null && this.valid && this.agencia_financiadora!=null && this.valor_financiado!=-1 && this.descricao!=null && this.participantes!=null)
-        setStatus("Concluíddo");
+    public Vector<Publicacao> getPublicacoes() {
+        return publicacoes;
+    }
+    public void setPublicacoes(Vector<Publicacao> publicacoes) {
+        this.publicacoes = publicacoes;
+    }
+    @Override
+    public String toString() {
+        String res = "Titulo: " + getTitulo() + ", Status: " + getStatus() + ", Objetivo: "+ getObjetivo() + ", Descricao: " +
+        getDescricao() + ", Inicio: "+getData_inicio()+", Fim: " + getData_fim();
+        return res;
     }
     public boolean checkValid(){
+        setStatus("Em elaboração");
+        boolean flag=false;
         for (int i = 0; i < participantes.size(); i++) {
             if(participantes.elementAt(i) instanceof Professor)
             {
-                setStatus("Em elaboração");
-                return true;
+                flag = true;
             } 
         }
-        return false;
+        if(!flag) System.out.println("Não há professor cadastrado para o projeto");
+        return flag;
     }
 
 }
