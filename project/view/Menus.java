@@ -9,11 +9,8 @@ import project.model.Colaborador;
 import project.model.Aluno;
 
 import java.time.LocalDate;
-import java.util.GregorianCalendar;
 import java.util.Scanner;
 import java.util.Vector;
-
-import javax.xml.namespace.QName;
 
 public class Menus {
     public static void limpa() {
@@ -31,9 +28,10 @@ public class Menus {
     }
     public static void menu_lab_pesquisa(Administrador admin, Scanner sc, LabPesquisa lab) { 
         limpa();
-        System.out.println("Laboratório "+ lab.getNome());
         int opt = -1;
         while(opt!=0) {
+            limpa();
+            System.out.println("Laboratório "+ lab.getNome());
             System.out.println("Escolha uma opção: ");
             System.out.println("1) Adicionar colaboradores ao laboratório");
             System.out.println("2) Adicionar projetos ao laboratório");
@@ -44,24 +42,50 @@ public class Menus {
             switch(opt) {
                 case 1:
                     menu_lab_pesquisa_add_colaborador(admin, sc, lab);
+                    System.out.println("Pressione qualquer tecla para continuar...");
+                    sc.nextLine();
                     break;
                 case 2:
                     menu_lab_pesquisa_add_projetos(admin, sc, lab);
+                    System.out.println("Pressione qualquer tecla para continuar...");
+                    sc.nextLine();
                     break;
                 case 3:
                     menu_colaborador(admin, sc,lab);
+                    System.out.println("Pressione qualquer tecla para continuar...");
+                    sc.nextLine();
                     break;
                 case 4:
                     menu_projeto(admin, sc, lab);
                     break;
+                case 0:
+                    limpa();
+                    break;
                 default:
+                    System.out.println("Opção inválida");
+                    System.out.println("Pressione qualquer tecla para continuar...");
+                    sc.nextLine();
                     break;
             }
         }
     }
     public static void menu_projeto_alteracao(Administrador admin, Scanner sc, LabPesquisa lab, Projeto p) {
         limpa();
-        System.out.println("Menu aqui de alteracao");
+        System.out.println("Mudar estado do projeto para: ");
+        System.out.println("1) Em andamento");
+        System.out.println("2) Concluído");
+        int opt = Integer.parseInt(sc.nextLine());
+        switch(opt) {
+            case 1:
+                admin.mudarStatusProjeto("Em andamento", p);
+                break;
+            case 2:
+                admin.mudarStatusProjeto("Concluído", p);
+                break;
+            default:
+                System.out.println("Opção inválida");
+                break;
+        }
     }
     public static void menu_projeto(Administrador admin, Scanner sc, LabPesquisa lab) {
         limpa();
@@ -73,25 +97,53 @@ public class Menus {
             return;
         }
         else {
-            System.out.println("Selecione um projeto para ser editado");
-        
             for (int i = 0; i < projs.size(); i++) {
-                System.out.println(i + " ) "+projs.elementAt(i));
+                System.out.println(i + ") "+projs.elementAt(i));
             }
+            System.out.println("Selecione um projeto para ser editado");
             int x = Integer.parseInt(sc.nextLine());
+            if(x>=projs.size()) {
+                System.out.println("Não existente");
+                System.out.println("Pressione qualquer tecla para continuar...");
+                sc.nextLine();
+                return;
+            }
             Projeto selecionado = projs.elementAt(x);
             int opt=-1;
             while(opt!=0) {
+                limpa();
+                System.out.println("Alterando o projeto " + selecionado.getTitulo());
                 System.out.println("Selecione uma funcionalidade");
                 System.out.println("1) Alterar status do projeto");
+                System.out.println("2) Adicionar colaborador já existente ao projeto");
                 System.out.println("0) Sair");
                 opt = Integer.parseInt(sc.nextLine());
                 switch(opt) {
                     case 1:
-                    menu_projeto_alteracao(admin, sc, lab, selecionado);
-                    break;
+                        menu_projeto_alteracao(admin, sc, lab, selecionado);
+                        System.out.println("Pressione qualquer tecla para continuar...");
+                        sc.nextLine();
+                        break;
+                    case 2:
+                        System.out.println("Insira o nome do colaborador existente");
+                        String nome = sc.nextLine();
+                        Colaborador busca = lab.getColaborador(nome);
+                        if(busca!=null) {
+                            admin.addProjetoColaborador(busca, selecionado);
+                        }
+                        else {
+                            System.out.println("Colaborador não encontrado");
+                        }
+                        System.out.println("Pressione qualquer tecla para continuar...");
+                        sc.nextLine();
                     case 0:
-                    break;
+                        limpa();
+                        break;
+                    default:
+                        System.out.println("Opcao invalida");
+                        System.out.println("Pressione qualquer tecla para continuar...");
+                        sc.nextLine();
+                        break;
                 }
             }
         }
@@ -140,9 +192,6 @@ public class Menus {
                 System.out.println("Tipo de colaborador inválido");
                 break;
         }
-        System.out.println("Pressione qualquer tecla para continuar..");
-        sc.nextLine();
-        limpa();
     }
     public static void menu_colaborador(Administrador admin, Scanner sc, LabPesquisa lab) {
         Vector<Colaborador> colab = lab.getColaboradores();
@@ -191,6 +240,7 @@ public class Menus {
         System.out.println("Digite uma opcao:\n1) Selecionar um professor existente \n2) Adicionar um novo professor ao laboratório e vincular à pesquisa");
         int opt = Integer.parseInt(sc.nextLine());
         Vector<Colaborador> participantes = new Vector<Colaborador>();
+        Projeto proj;
         switch(opt) {
             case 1:
                 if(!lab.hasProfessor()){
@@ -211,24 +261,28 @@ public class Menus {
                 if(p==null) System.out.println("Professor não encontrado");
                 else {
                     participantes.add(p);
+                    proj = new Projeto(titulo, data_inicio, data_fim, agencia_financiadora, valor_financiado, objetivo, descricao, participantes);
+                    admin.addProjetoColaborador(p, proj);
+                    admin.cadastroProjetoLab(lab, proj);
                 }
                 break;
             case 2:
-                System.out.println("Digite o nome do colaborador: ");
+                System.out.println("Digite o nome do professor: ");
                 String nome = sc.nextLine();
-                System.out.println("Digite o email do colaborador: ");
+                System.out.println("Digite o email do professor: ");
                 String email = sc.nextLine();
                 Colaborador c = new Professor(nome, email);
-                if(lab.getColaborador(c.getNome())==null) {
-                    lab.addColaborador(c);
-                    participantes.add(c);
-                }
+                lab.addColaborador(c);
+                participantes.add(c);
+                proj = new Projeto(titulo, data_inicio, data_fim, agencia_financiadora, valor_financiado, objetivo, descricao, participantes);
+                admin.addProjetoColaborador(c, proj);
+                admin.cadastroProjetoLab(lab, proj);
                 break;
             default:
                 break;
         }
-        Projeto p = new Projeto(titulo, data_inicio, data_fim, agencia_financiadora, valor_financiado, objetivo, descricao, participantes);
-        admin.cadastroProjetoLab(lab, p);
+        
+        
     }
 
 }

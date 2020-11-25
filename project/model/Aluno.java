@@ -23,7 +23,7 @@ public class Aluno extends Colaborador{
     @Override
     public String toString() {
         String res = "Aluno| " + super.toString();
-        res+= "Tipo: " + getTipo();
+        res+= ", Tipo: " + getTipo();
         return res;
     }
     

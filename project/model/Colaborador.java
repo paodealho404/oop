@@ -3,20 +3,20 @@ import java.util.Vector;
 public class Colaborador extends Usuario{
    protected Vector<Publicacao> publicacao;
    protected Vector<Projeto> projetos;
-   protected int num_projetos;
+   protected int andamento;
    protected String link_lattes;
    public Colaborador( String nome, String email)
    {
       super(nome, email);
-      this.num_projetos = 0;
-      this.projetos = null;
+      this.andamento = 0;
+      this.projetos = new Vector<Projeto>();
    }
    public Colaborador( String nome, String email, String link)
    {
       super(nome, email);
       setLink_lattes(link);
-      this.num_projetos =0;
-      this.projetos = null;
+      this.andamento = 0;
+      this.projetos = new Vector<Projeto>();
    }
    public String getLink_lattes() {
       return link_lattes;
@@ -29,27 +29,13 @@ public class Colaborador extends Usuario{
       for (int i = 0; i < projetos.size(); i++) {
          if(projetos.elementAt(i).getStatus().equals("Em andamento")) num++;
       }
-      setNum_projetos(num);
+      setAndamento(num);
    }
-   public void addProjeto(Projeto p) {
-      if(p.getValid()) {
-         check_projetos();
-         if(getNum_projetos()>=2) System.out.println("Numero máximo de projetos"+" 'Em andamento' "+ "atingido");
-         else {
-            if(p.getStatus().equals("Em elaboração")){
-               System.out.println("Projeto adicionado com sucesso ao colaborador+"+ super.getNome());
-               projetos.add(p);
-            }
-            else System.out.println("Alocação não permitida. Projeto não está mais em fase de elaboração");
-         }
-      }
-      else System.out.println("Projeto inválido ( Faltam informações ou um professor responsável )");  
+   public int getAndamento() {
+      return andamento;
    }
-   public int getNum_projetos() {
-      return num_projetos;
-   }
-   public void setNum_projetos(int num_projetos) {
-      this.num_projetos = num_projetos;
+   public void setAndamento(int andamento) {
+      this.andamento = andamento;
    }
    public Vector<Projeto> getProjetos() {
       return projetos;

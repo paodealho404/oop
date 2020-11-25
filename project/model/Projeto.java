@@ -1,7 +1,6 @@
 package project.model;
 import java.time.LocalDate;
 import java.util.Vector;
-import java.util.Date;
 public class Projeto{
     private String titulo;
     private LocalDate data_inicio;
@@ -96,17 +95,14 @@ public class Projeto{
     @Override
     public String toString() {
         String res = "Titulo: " + getTitulo() + ", Status: " + getStatus() + ", Objetivo: "+ getObjetivo() + ", Descricao: " +
-        getDescricao() + ", Inicio: "+getData_inicio()+", Fim: " + getData_fim();
+        getDescricao() + ", Inicio: "+getData_inicio()+", Fim: " + getData_fim() + ", Participantes: "+ getParticipantes().size();
         return res;
     }
     public boolean checkValid(){
         setStatus("Em elaboração");
         boolean flag=false;
         for (int i = 0; i < participantes.size(); i++) {
-            if(participantes.elementAt(i) instanceof Professor)
-            {
-                flag = true;
-            } 
+            if(participantes.elementAt(i) instanceof Professor) flag = true;
         }
         if(!flag) System.out.println("Não há professor cadastrado para o projeto");
         return flag;
