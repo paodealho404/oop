@@ -1,4 +1,5 @@
 package project.model;
+import java.util.Collections;
 import java.util.Vector;
 public class Colaborador extends Usuario{
    protected Vector<Publicacao> publicacao;
@@ -58,14 +59,19 @@ public class Colaborador extends Usuario{
       String res = "Nome: " + super.getNome() + ", Email: "+ super.getEmail();
       return res;
    }
-   public String colaboradorInfo()
+   public String relatorioColaborador()
    {
-      String res = "{ "+ toString()+", ";
-      for (int i = 0; i < publicacao.size(); i++) {
-         res+= publicacao.elementAt(i);
-         if(i<publicacao.size()-1) res+=", ";
+      String res = toString() + ", PROJETOS: ";
+      if(projetos.size()==0) res+="NENHUM";
+      else {
+         Vector<Projeto> projetos = new Vector<Projeto>(getProjetos());
+         Collections.sort(projetos);
+         Collections.reverse(projetos);
+         for (int i = 0; i < projetos.size(); i++) {
+            res+= projetos.elementAt(i);
+            if(i<projetos.size()-1) res+=", ";
+         }
       }
-      res+=" }";
       return res;
    }
 }

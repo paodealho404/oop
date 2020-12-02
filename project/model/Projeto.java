@@ -1,25 +1,25 @@
 package project.model;
 import java.time.LocalDate;
 import java.util.Vector;
-public class Projeto{
+public class Projeto implements Comparable<Projeto>{
     private String titulo;
-    private LocalDate data_inicio;
-    private LocalDate data_fim;
-    private String agencia_financiadora;
-    private double valor_financiado;
+    private LocalDate dataInicio;
+    private LocalDate dataFim;
+    private String agenciaFinanciadora;
+    private double valorFinanciado;
     private String objetivo;
     private String descricao;
     private Vector<Colaborador> participantes;
     private Vector<Publicacao> publicacoes;
     private boolean valid;
     private String status;
-    public Projeto(String titulo, LocalDate data_inicio, LocalDate data_fim, String agencia_financiadora, double valor_financiado, String objetivo, String descricao, Vector<Colaborador> participantes)
+    public Projeto(String titulo, LocalDate dataInicio, LocalDate dataFim, String agenciaFinanciadora, double valorFinanciado, String objetivo, String descricao, Vector<Colaborador> participantes)
     {
         this.titulo = titulo;
-        this.data_fim = data_fim;
-        this.data_inicio = data_inicio;
-        this.agencia_financiadora = agencia_financiadora;
-        this.valor_financiado = valor_financiado;
+        this.dataFim = dataFim;
+        this.dataInicio = dataInicio;
+        this.agenciaFinanciadora = agenciaFinanciadora;
+        this.valorFinanciado = valorFinanciado;
         this.objetivo = objetivo;
         this.descricao = descricao;
         this.participantes = participantes;
@@ -29,14 +29,14 @@ public class Projeto{
     public boolean getValid() {
         return valid;
     }
-    public String getAgencia_financiadora() {
-        return agencia_financiadora;
+    public String getAgenciaFinanciadora() {
+        return agenciaFinanciadora;
     }
-    public LocalDate getData_fim() {
-        return data_fim;
+    public LocalDate getDataFim() {
+        return dataFim;
     }
-    public LocalDate getData_inicio() {
-        return data_inicio;
+    public LocalDate getDataInicio() {
+        return dataInicio;
     }
     public String getDescricao() {
         return descricao;
@@ -53,17 +53,17 @@ public class Projeto{
     public String getStatus() {
         return status;
     }
-    public double getValor_financiado() {
-        return valor_financiado;
+    public double getValorFinanciado() {
+        return valorFinanciado;
     }
-    public void setAgencia_financiadora(String agencia_financiadora) {
-        this.agencia_financiadora = agencia_financiadora;
+    public void setAgenciaFinanciadora(String agenciaFinanciadora) {
+        this.agenciaFinanciadora = agenciaFinanciadora;
     }
-    public void setData_fim(LocalDate data_fim) {
-        this.data_fim = data_fim;
+    public void setDataFim(LocalDate dataFim) {
+        this.dataFim = dataFim;
     }
-    public void setData_inicio(LocalDate data_inicio) {
-        this.data_inicio = data_inicio;
+    public void setDataInicio(LocalDate dataInicio) {
+        this.dataInicio = dataInicio;
     }
     public void setDescricao(String descricao) {
         this.descricao = descricao;
@@ -77,8 +77,8 @@ public class Projeto{
     public void setTitulo(String titulo) {
         this.titulo = titulo;
     }
-    public void setValor_financiado(double valor_financiado) {
-        this.valor_financiado = valor_financiado;
+    public void setValorFinanciado(double valorFinanciado) {
+        this.valorFinanciado = valorFinanciado;
     }
     public void setValid(boolean valid) {
         this.valid = valid;
@@ -95,7 +95,7 @@ public class Projeto{
     @Override
     public String toString() {
         String res = "Titulo: " + getTitulo() + ", Status: " + getStatus() + ", Objetivo: "+ getObjetivo() + ", Descricao: " +
-        getDescricao() + ", Inicio: "+getData_inicio()+", Fim: " + getData_fim() + ", Participantes: "+ getParticipantes().size();
+        getDescricao() + ", Inicio: "+getDataInicio()+", Fim: " + getDataFim() + ", Participantes: "+ getParticipantes().size();
         return res;
     }
     public boolean checkValid(){
@@ -107,5 +107,10 @@ public class Projeto{
         if(!flag) System.out.println("Não há professor cadastrado para o projeto");
         return flag;
     }
+    @Override
+    public int compareTo(Projeto a) {
+        return this.getDataFim().compareTo(a.getDataFim());
+    }
+
 
 }

@@ -4,6 +4,7 @@ public class LabPesquisa {
     private String nome;
     private Vector<Colaborador> colaboradores;
     private Vector<Projeto> projetos;
+    private Vector<Publicacao> publicacoes;
     private Administrador admin;
     public LabPesquisa(String nome, Administrador admin) {
         this.nome = nome;
@@ -14,6 +15,16 @@ public class LabPesquisa {
     public Administrador getAdmin() {
         return admin;
     }
+    public int getNumOrientacoes() {
+        int total = 0;
+        for (int i = 0; i < colaboradores.size(); i++) {
+            if(colaboradores.elementAt(i) instanceof Professor) {
+                Professor x = (Professor) colaboradores.elementAt(i);
+                total+= x.getOrientacao().size();
+            }
+        }
+        return total;
+    }
     public Vector<Colaborador> getColaboradores() {
         return colaboradores;
     }
@@ -23,13 +34,51 @@ public class LabPesquisa {
     public Vector<Projeto> getProjetos() {
         return projetos;
     }
+    public int getProjetosElaboracao() {
+        Vector<Projeto> projs = getProjetos();
+        int total=0;
+        for (int i = 0; i < projs.size(); i++) {
+            if(projs.elementAt(i).getStatus().equals("Em elaboração")) total++;
+        }
+        return total;
+    }
+    public int getProjetosAndamento() {
+        Vector<Projeto> projs = getProjetos();
+        int total=0;
+        for (int i = 0; i < projs.size(); i++) {
+            if(projs.elementAt(i).getStatus().equals("Em andamento")) total++;
+        }
+        return total;
+    }
+    public int getProjetosConcluido() {
+        Vector<Projeto> projs = getProjetos();
+        int total=0;
+        for (int i = 0; i < projs.size(); i++) {
+            if(projs.elementAt(i).getStatus().equals("Concluído")) total++;
+        }
+        return total;
+    }
+    public Vector<Publicacao> getPublicacoes() {
+        return publicacoes;
+    }
+    public void setPublicacoes(Vector<Publicacao> publicacoes) {
+        this.publicacoes = publicacoes;
+    }
+    public String relatorioProdutividade() {
+        int projAnd = getProjetosAndamento();
+        int projConc = getProjetosConcluido();
+        int projElab = getProjetosElaboracao();
+        String res = "Número de colaboradores: " + getColaboradores().size() + "\nNúmero de projetos em elaboração: "+ projElab +
+        "\nNúmero de projetos em andamento: " + projAnd + "\nNúmero de projetos concluídos: " + projConc +"\nNúmero total de projetos: "
+        +getProjetos().size() + "\nOrientações: " + getNumOrientacoes()
+        + "\nPublicacoes: " + publicacoes.size();
+        return res;
+    }
     public void addProjeto(Projeto p) {
         if(projetos!=null) {
-            for (int i = 0; i < projetos.size(); i++) {
-                if(projetos.elementAt(i).getTitulo().equals(p.getTitulo())){
-                    System.out.println("Projeto com mesmo nome já existente");
-                    return;
-                }
+            if(projetos.contains(p)) {
+                System.out.println("Projeto já existente");
+                return;
             }
         }
         projetos.add(p);
@@ -37,12 +86,10 @@ public class LabPesquisa {
     }
     public void addColaborador(Colaborador c) {
         if(colaboradores!=null) {
-            for (int i = 0; i < colaboradores.size(); i++) {
-                if(colaboradores.elementAt(i).getNome().equals(c.getNome())){
-                    System.out.println("Colaborador com mesmo nome já existente");
-                    return;
-                }
-            }
+           if(colaboradores.contains(c)) {
+               System.out.println("Colaborador já existente");
+               return;
+           }
         }
         colaboradores.add(c);
         System.out.println("Colaborador adicionado com sucesso ao laboratório!");

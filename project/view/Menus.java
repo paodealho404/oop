@@ -18,15 +18,52 @@ public class Menus {
             System.out.println("");
         }
     }
-    public static void menu_criar_lab(Administrador admin, Scanner sc) {
+    public static void menuAdmin() {
+        Scanner sc = new Scanner(System.in);
+        String nome, email, login, senha;
+        System.out.println("Crie um administrador para o sistema");
+        System.out.println("Nome: ");
+        nome = sc.nextLine();
+        System.out.println("Email: ");
+        email = sc.nextLine();
+        System.out.println("Login: ");
+        login = sc.nextLine();
+        System.out.println("Senha: ");
+        senha = sc.nextLine();
+        Administrador admin = new Administrador(nome, email, login, senha);
+        System.out.println("Pressione qualquer tecla para continuar");
+        sc.nextLine();
+        limpa();
+        System.out.println("Efetue login: "+ admin.getLogin());
+        System.out.println("Senha:");
+        senha = sc.nextLine();
+        boolean flag = false;
+        while(!flag)
+        {
+            if(admin.logar(senha)) {
+                flag=true;
+                limpa();
+                menuCriarLab(admin, sc);
+            }
+            else {
+                System.out.println("Pressione qualquer tecla para continuar...");
+                sc.nextLine();
+                limpa();
+                System.out.println("Efetue login: "+ admin.getLogin());
+                System.out.println("Senha:");
+                senha = sc.nextLine();
+            }
+        }
+    }
+    public static void menuCriarLab(Administrador admin, Scanner sc) {
         limpa();
         System.out.println("Crie um laboratório de pesquisa");
         System.out.println("Nome: ");
         String nome = sc.nextLine();
         LabPesquisa lab = new LabPesquisa(nome, admin);
-        menu_lab_pesquisa(admin, sc, lab);
+        menuLabPesquisa(admin, sc, lab);
     }
-    public static void menu_lab_pesquisa(Administrador admin, Scanner sc, LabPesquisa lab) { 
+    public static void menuLabPesquisa(Administrador admin, Scanner sc, LabPesquisa lab) { 
         limpa();
         int opt = -1;
         while(opt!=0) {
@@ -35,28 +72,36 @@ public class Menus {
             System.out.println("Escolha uma opção: ");
             System.out.println("1) Adicionar colaboradores ao laboratório");
             System.out.println("2) Adicionar projetos ao laboratório");
-            System.out.println("3) Menu de seleção e edição de colaboradores");
+            System.out.println("3) Menu de Publicações");
             System.out.println("4) Menu de seleçao e edição de projetos");
+            System.out.println("5) Relatório Produtividade");
+            System.out.println("6) Consulta colaborador");
+            System.out.println("7) Consulta projeto");
             System.out.println("0) Sair");
             opt = Integer.parseInt(sc.nextLine());
             switch(opt) {
                 case 1:
-                    menu_lab_pesquisa_add_colaborador(admin, sc, lab);
+                    menuLabPesquisaAddColaborador(admin, sc, lab);
                     System.out.println("Pressione qualquer tecla para continuar...");
                     sc.nextLine();
                     break;
                 case 2:
-                    menu_lab_pesquisa_add_projetos(admin, sc, lab);
+                    menuLabPesquisaAddProjetos(admin, sc, lab);
                     System.out.println("Pressione qualquer tecla para continuar...");
                     sc.nextLine();
                     break;
                 case 3:
-                    menu_colaborador(admin, sc,lab);
+                    menuPublicacao(admin, sc,lab);
                     System.out.println("Pressione qualquer tecla para continuar...");
                     sc.nextLine();
                     break;
                 case 4:
-                    menu_projeto(admin, sc, lab);
+                    menuProjeto(admin, sc, lab);
+                    break;
+                case 5:
+                    lab.relatorioProdutividade();
+                    System.out.println("Pressione qualquer tecla para continuar...");
+                    sc.nextLine();
                     break;
                 case 0:
                     limpa();
@@ -69,7 +114,7 @@ public class Menus {
             }
         }
     }
-    public static void menu_projeto_alteracao(Administrador admin, Scanner sc, LabPesquisa lab, Projeto p) {
+    public static void menuProjetoAlteracao(Administrador admin, Scanner sc, LabPesquisa lab, Projeto p) {
         limpa();
         System.out.println("Mudar estado do projeto para: ");
         System.out.println("1) Em andamento");
@@ -87,7 +132,24 @@ public class Menus {
                 break;
         }
     }
-    public static void menu_projeto(Administrador admin, Scanner sc, LabPesquisa lab) {
+    public static void menuConsultaColaborador(LabPesquisa lab, Scanner sc) {
+        limpa();
+        lab.getColaboradores().forEach((colaborador)->{
+            int i=0;
+            System.out.println(i+") "+ colaborador);
+        });
+        System.out.println("Selecione um colaborador para mostrar na lista");
+        int opt = Integer.parseInt(sc.nextLine());
+        if( opt < lab.getColaboradores().size()) {
+            Colaborador x = lab.getColaboradores().elementAt(opt);
+            System.out.println(x.relatorioColaborador());
+        } 
+        else {
+            System.out.println("Opção inválida");
+        }
+
+    }
+    public static void menuProjeto(Administrador admin, Scanner sc, LabPesquisa lab) {
         limpa();
         Vector<Projeto> projs = lab.getProjetos();
         if(projs.size()==0) {
@@ -120,16 +182,16 @@ public class Menus {
                 opt = Integer.parseInt(sc.nextLine());
                 switch(opt) {
                     case 1:
-                        menu_projeto_alteracao(admin, sc, lab, selecionado);
+                        menuProjetoAlteracao(admin, sc, lab, selecionado);
                         System.out.println("Pressione qualquer tecla para continuar...");
                         sc.nextLine();
                         break;
                     case 2:
                         System.out.println("Insira o nome do colaborador existente");
                         String nome = sc.nextLine();
-                        Colaborador busca = lab.getColaborador(nome);
-                        if(busca!=null) {
-                            admin.addProjetoColaborador(busca, selecionado);
+                        Colaborador colab_result = lab.getColaborador(nome);
+                        if(colab_result!=null) {
+                            admin.addProjetoColaborador(selecionado, colab_result);
                         }
                         else {
                             System.out.println("Colaborador não encontrado");
@@ -148,7 +210,7 @@ public class Menus {
             }
         }
     }
-    public static void menu_lab_pesquisa_add_colaborador(Administrador admin, Scanner sc, LabPesquisa lab) {
+    public static void menuLabPesquisaAddColaborador(Administrador admin, Scanner sc, LabPesquisa lab) {
         limpa();
         System.out.println("Laboratório "+ lab.getNome());
         System.out.println("->Adicionar colaborador ao laboratório");
@@ -193,13 +255,13 @@ public class Menus {
                 break;
         }
     }
-    public static void menu_colaborador(Administrador admin, Scanner sc, LabPesquisa lab) {
+    public static void menuPublicacao(Administrador admin, Scanner sc, LabPesquisa lab) {
         Vector<Colaborador> colab = lab.getColaboradores();
         for (int i = 0; i < colab.size(); i++) {
             System.out.println(colab.elementAt(i));
         }
     }
-    public static void menu_lab_pesquisa_add_projetos(Administrador admin, Scanner sc, LabPesquisa lab) {
+    public static void menuLabPesquisaAddProjetos(Administrador admin, Scanner sc, LabPesquisa lab) {
         limpa();
         System.out.println("Laboratório "+ lab.getNome());
         System.out.println("->Adicionar projeto ao laboratório");
@@ -253,7 +315,7 @@ public class Menus {
                 Vector<Colaborador> colab = lab.getColaboradores();
                 System.out.println("Professores: ");
                 for (int i = 0; i < colab.size(); i++) {
-                    if(colab.elementAt(i)instanceof Professor) System.out.println(colab.elementAt(i));
+                    if(colab.elementAt(i) instanceof Professor) System.out.println(colab.elementAt(i));
                 }
                 System.out.println("Insira o nome do professor desejado");
                 String busca = sc.nextLine();
@@ -262,8 +324,8 @@ public class Menus {
                 else {
                     participantes.add(p);
                     proj = new Projeto(titulo, data_inicio, data_fim, agencia_financiadora, valor_financiado, objetivo, descricao, participantes);
-                    admin.addProjetoColaborador(p, proj);
-                    admin.cadastroProjetoLab(lab, proj);
+                    admin.addProjetoColaborador(proj, p);
+                    admin.cadastroProjetoLab(proj, lab);
                 }
                 break;
             case 2:
@@ -275,8 +337,8 @@ public class Menus {
                 lab.addColaborador(c);
                 participantes.add(c);
                 proj = new Projeto(titulo, data_inicio, data_fim, agencia_financiadora, valor_financiado, objetivo, descricao, participantes);
-                admin.addProjetoColaborador(c, proj);
-                admin.cadastroProjetoLab(lab, proj);
+                admin.addProjetoColaborador(proj, c);
+                admin.cadastroProjetoLab(proj, lab);
                 break;
             default:
                 break;
@@ -284,5 +346,4 @@ public class Menus {
         
         
     }
-
 }

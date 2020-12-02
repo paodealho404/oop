@@ -35,10 +35,14 @@ public class Administrador extends Usuario{
             return false;
         }
     }
+    public boolean isProjectValid(Projeto p) {
+        if(p.getValid() && p.getTitulo()!=null && p.getDataFim()!=null && p.getDataInicio()!=null
+        && p.getValorFinanciado()>=0 &&p.getAgenciaFinanciadora()!=null && p.getObjetivo()!=null && p.getDescricao()!=null && p.getParticipantes().size()>0) return true;
+        return false;
+    }
     public void mudarStatusProjeto(String novo, Projeto p) {
         if(novo.equals("Em andamento")) {
-            if(p.getValid() && p.getStatus().equals("Em elaboração") && p.getTitulo()!=null && p.getData_fim()!=null && p.getData_inicio()!=null
-        &&p.getValor_financiado()>=0 &&p.getAgencia_financiadora()!=null && p.getObjetivo()!=null && p.getDescricao()!=null && p.getParticipantes().size()>0) {
+            if(isProjectValid(p) &&  p.getStatus().equals("Em elaboração")) {
             Vector<Colaborador> colab = p.getParticipantes();
             for (int i = 0; i < colab.size(); i++) {
                 if(colab.elementAt(i) instanceof Aluno) {
@@ -71,14 +75,35 @@ public class Administrador extends Usuario{
             else System.out.println("Não foi possível alterar o status do projeto. Ainda não há publicações vinculadas a esse projeto");
         }
     }
-    public void cadastroProjetoLab(LabPesquisa lab, Projeto p) {
-        if(p.getValid() && p.getStatus().equals("Em elaboração") && p.getTitulo()!=null && p.getData_fim()!=null && p.getData_inicio()!=null
-        &&p.getValor_financiado()>=0 &&p.getAgencia_financiadora()!=null && p.getObjetivo()!=null && p.getDescricao()!=null && p.getParticipantes().size()>0) {
-            lab.addProjeto(p);
+    
+    public void cadastroProjetoLab(Projeto p, LabPesquisa lab) {
+        if( isProjectValid(p) && p.getStatus().equals("Em elaboração")) {
+            if(!lab.getProjetos().contains(p)) lab.addProjeto(p);
         }
         else System.out.println("Projeto inválido");
     }
-    public void addProjetoColaborador(Colaborador c, Projeto p) {
+    public void addPublicacaoProjeto(Publicacao pb, Projeto proj) {
+        Vector<Publicacao> publicacoes = proj.getPublicacoes();
+        if(proj.getStatus().equals("Em andamento") && !publicacoes.contains(pb)) {
+            publicacoes.add(pb);
+            proj.setPublicacoes(publicacoes);
+            proj.getParticipantes().forEach((colab)-> {
+                addPublicacaoColaborador(pb, colab);
+            });
+        }
+        else {
+            System.out.println("Projeto não está em fase de andamento");
+        }
+
+    }
+    public void addPublicacaoColaborador(Publicacao p, Colaborador c) {
+        Vector<Publicacao> colabPublicacao = c.getPublicacao();
+        if(!colabPublicacao.contains(p)) { 
+            colabPublicacao.add(p);
+            c.setPublicacao(colabPublicacao); 
+        }
+    }
+    public void addProjetoColaborador(Projeto p, Colaborador c) {
         if(!p.getStatus().equals("Em elaboração")) {
             System.out.println("Não foi possível inserir colaborador. Projeto não está mais em fase de elaboração");
             return;
