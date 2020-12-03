@@ -11,11 +11,6 @@ public class Aluno extends Colaborador{
         super(nome, email);
         setTipo(tipo);
     }
-    public Aluno( String nome, String email, String link, String tipo)
-    {
-        super(nome, email, link);
-        setTipo(tipo);
-    }
     public String getTipo() {
         return tipo;
     }
@@ -30,8 +25,8 @@ public class Aluno extends Colaborador{
     }
     @Override
     public String relatorioColaborador() {
-        String res = "Aluno| " + super.relatorioColaborador();
-        res+= ", PUBLICACOES: ";
+        String res = super.relatorioColaborador();
+        res+= "Publicações: ";    
         if(publicacao.size()==0) res += "NENHUMA";
         else {
            Vector<ProducaoAcademica> producoes = new Vector<ProducaoAcademica>();
@@ -41,7 +36,7 @@ public class Aluno extends Colaborador{
            for (int i = 0; i < publicacao.size(); i++) {
               res+= "PUBLICAÇÃO: ";
               res+= publicacao.elementAt(i);
-              if(i<publicacao.size()-1) res+=", ";
+              if(i<publicacao.size()-1) res+=", \n";
            }
         }
         return res;

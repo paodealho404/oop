@@ -5,27 +5,17 @@ public class Colaborador extends Usuario{
    protected Vector<Publicacao> publicacao;
    protected Vector<Projeto> projetos;
    protected int andamento;
-   protected String link_lattes;
    public Colaborador( String nome, String email)
    {
       super(nome, email);
       this.andamento = 0;
       this.projetos = new Vector<Projeto>();
-   }
-   public Colaborador( String nome, String email, String link)
-   {
-      super(nome, email);
-      setLink_lattes(link);
-      this.andamento = 0;
-      this.projetos = new Vector<Projeto>();
-   }
-   public String getLink_lattes() {
-      return link_lattes;
+      this.publicacao = new Vector<Publicacao>();
    }
    public Vector<Publicacao> getPublicacao() {
       return publicacao;
    }
-   public void check_projetos() {
+   public void checkProjetos() {
       int num = 0;
       for (int i = 0; i < projetos.size(); i++) {
          if(projetos.elementAt(i).getStatus().equals("Em andamento")) num++;
@@ -33,7 +23,15 @@ public class Colaborador extends Usuario{
       setAndamento(num);
    }
    public int getAndamento() {
+      checkProjetos();
       return andamento;
+   }
+   public Vector<Projeto> getProjetosParticipados(){
+      Vector<Projeto> projs = new Vector<Projeto>();
+      for (int i = 0; i < projetos.size(); i++) {
+         if(!projetos.elementAt(i).getStatus().equals("Em elaboração")) projs.add(projetos.elementAt(i));
+      }
+      return projs;
    }
    public void setAndamento(int andamento) {
       this.andamento = andamento;
@@ -44,15 +42,8 @@ public class Colaborador extends Usuario{
    public void setProjetos(Vector<Projeto> projetos) {
       this.projetos = projetos;
    }
-   public void setLink_lattes(String link_lattes) {
-      this.link_lattes = link_lattes;
-   }
    public void setPublicacao(Vector<Publicacao> publicacao) {
       this.publicacao = publicacao;
-   }
-   public void addPublicacao(Publicacao p)
-   {
-      this.publicacao.add(p);
    }
    @Override
    public String toString() {
@@ -61,15 +52,16 @@ public class Colaborador extends Usuario{
    }
    public String relatorioColaborador()
    {
-      String res = toString() + ", PROJETOS: ";
-      if(projetos.size()==0) res+="NENHUM";
+      String res = toString() + ", Projetos Participados: ";
+      Vector<Projeto> projetosValidos = new Vector<Projeto>(getProjetosParticipados());
+      if(projetosValidos.size()==0) res+="NENHUM\n";
       else {
-         Vector<Projeto> projetos = new Vector<Projeto>(getProjetos());
-         Collections.sort(projetos);
-         Collections.reverse(projetos);
-         for (int i = 0; i < projetos.size(); i++) {
-            res+= projetos.elementAt(i);
-            if(i<projetos.size()-1) res+=", ";
+         res+="\n";
+         Collections.sort(projetosValidos);
+         Collections.reverse(projetosValidos);
+         for (int i = 0; i < projetosValidos.size(); i++) {
+            res+= projetosValidos.elementAt(i);
+            res+=",\n";
          }
       }
       return res;

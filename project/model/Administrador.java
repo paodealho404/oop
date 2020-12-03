@@ -48,7 +48,6 @@ public class Administrador extends Usuario{
                 if(colab.elementAt(i) instanceof Aluno) {
                     Aluno aux = (Aluno)colab.elementAt(i);
                     if(aux.getTipo().equals("Graduação")){
-                       aux.check_projetos();
                         if(aux.getAndamento()==2) { // removendo alunos de graduação com 2 projetos em andamento
                             colab.removeElementAt(i);
                             p.setParticipantes(colab);
@@ -82,26 +81,58 @@ public class Administrador extends Usuario{
         }
         else System.out.println("Projeto inválido");
     }
+    
     public void addPublicacaoProjeto(Publicacao pb, Projeto proj) {
         Vector<Publicacao> publicacoes = proj.getPublicacoes();
-        if(proj.getStatus().equals("Em andamento") && !publicacoes.contains(pb)) {
-            publicacoes.add(pb);
-            proj.setPublicacoes(publicacoes);
-            proj.getParticipantes().forEach((colab)-> {
-                addPublicacaoColaborador(pb, colab);
-            });
+        publicacoes.add(pb);
+        proj.setPublicacoes(publicacoes);
+    }
+    public void addPublicacaoLabPesquisa(LabPesquisa lab, Publicacao p) {
+        Vector<Publicacao> publicacoes = lab.getPublicacoes();
+        if(p.getProjeto().getStatus().equals("Em andamento")) {
+            if(!publicacoes.contains(p)){
+                publicacoes.add(p);
+                lab.setPublicacoes(publicacoes);
+                addPublicacaoProjeto(p, p.getProjeto());
+                addPublicacaoColaboradores(p, p.getAutores());
+            }
+            else {
+                System.out.println("Publicação já existente");
+            }
+            
         }
         else {
             System.out.println("Projeto não está em fase de andamento");
         }
-
+    }
+    public void addPublicacaoColaboradores(Publicacao p, Vector<Colaborador> colaboradores) {
+        Vector<Colaborador> novosColaboradores = new Vector<Colaborador>(colaboradores);
+        novosColaboradores.forEach(colaborador->{
+            addPublicacaoColaborador(p, colaborador);
+        });
+        p.setAutores(novosColaboradores);
     }
     public void addPublicacaoColaborador(Publicacao p, Colaborador c) {
         Vector<Publicacao> colabPublicacao = c.getPublicacao();
-        if(!colabPublicacao.contains(p)) { 
+        if(!colabPublicacao.contains(p)) {
             colabPublicacao.add(p);
-            c.setPublicacao(colabPublicacao); 
+            c.setPublicacao(colabPublicacao);
         }
+    }
+    public void addOrientacaoProfessor(Orientacao o, Professor p) {
+        Vector<Orientacao> orientacoes = new Vector<Orientacao>(p.getOrientacao());
+        if(!orientacoes.contains(o)) {
+            System.out.println("Orientação adicionada");
+            orientacoes.add(o);
+            p.setOrientacao(orientacoes);
+        }
+    }
+    public void addProjetoColaboradores(Projeto p, Vector<Colaborador> colaboradores) {
+        Vector<Colaborador> novosColaboradores = new Vector<Colaborador>(colaboradores);
+        novosColaboradores.forEach(colab->{
+            addProjetoColaborador(p, colab);
+        });
+        p.setParticipantes(novosColaboradores);
     }
     public void addProjetoColaborador(Projeto p, Colaborador c) {
         if(!p.getStatus().equals("Em elaboração")) {
@@ -109,27 +140,34 @@ public class Administrador extends Usuario{
             return;
         }
         Vector<Projeto> projetos = c.getProjetos();
-        Vector<Colaborador> colab = p.getParticipantes();
-        if(c instanceof Aluno){
-            Aluno aux = (Aluno) c;
-            if(aux.getTipo().equals("Graduação")) {
-                aux.check_projetos();
-                if(aux.getAndamento()>=2) System.out.println("Não é possível inserir o aluno "+ aux.getNome() + ". Capacidade máxima de projetos em andamento atingida");
+        if(projetos.contains(p)) {
+            // System.out.println("Colaborador já possui o projeto na sua lista");
+            return;
+        } 
+        else {
+            if(c instanceof Aluno){
+                Aluno aux = (Aluno) c;
+                if(aux.getTipo().equals("Graduação")) {
+                    if(aux.getAndamento()>=2) System.out.println("Não é possível inserir o aluno "+ aux.getNome() + ". Capacidade máxima de projetos em andamento atingida");
+                    else {
+                        projetos.add(p);
+                        c.setProjetos(projetos);
+                        System.out.println("Projeto adicionado com sucesso ao colaborador");
+                    }
+                }
                 else {
                     projetos.add(p);
                     c.setProjetos(projetos);
-                    colab.add(c);
-                    p.setParticipantes(colab);
                     System.out.println("Projeto adicionado com sucesso ao colaborador");
                 }
             }
+            else {
+                projetos.add(p);
+                c.setProjetos(projetos);
+                System.out.println("Projeto adicionado com sucesso ao colaborador");
+            }
+            
         }
-        else {
-            projetos.add(p);
-            c.setProjetos(projetos);
-            colab.add(c);
-            p.setParticipantes(colab);
-            System.out.println("Projeto adicionado com sucesso ao colaborador");
-        }
+        
     }
 }

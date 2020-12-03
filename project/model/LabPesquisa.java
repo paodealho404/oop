@@ -10,6 +10,7 @@ public class LabPesquisa {
         this.nome = nome;
         this.admin = admin;
         this.colaboradores = new Vector<Colaborador>();
+        this.publicacoes = new Vector<Publicacao>();
         this.projetos = new Vector<Projeto>();
     }
     public Administrador getAdmin() {

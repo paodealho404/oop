@@ -7,6 +7,7 @@ public class Professor extends Colaborador{
     public Professor(String nome, String email)
     {
         super(nome, email);
+        this.orientacao = new Vector<Orientacao>();
     }
     public Vector<Orientacao> getOrientacao() {
         return orientacao;
@@ -18,40 +19,28 @@ public class Professor extends Colaborador{
     public String toString() {
         return "Professor| "+super.toString();
     }
-    public void addOrientacao(Orientacao orientacao)
-    {
-        this.orientacao.add(orientacao);
-    }
-    public String professorInfo() {
-        String res = "Professor| "+ super.relatorioColaborador();
+    @Override
+    public String relatorioColaborador() {
+        String res = super.relatorioColaborador();
         Vector<ProducaoAcademica> producoes = new Vector<ProducaoAcademica>();
         producoes.addAll(super.getPublicacao());
         producoes.addAll(getOrientacao());
         Collections.sort(producoes);
         Collections.reverse(producoes);
-        if(getPublicacao().size() == 0||getOrientacao().size()==0) {
-            if(getPublicacao().size() == 0 && getOrientacao().size()==0){
-                res+="NENHUMA PUBLICAÇÃO, NENHUMA ORIENTAÇÃO";
+        res+="Produção Academica:\n";
+        if(getPublicacao().size() == 0 && getOrientacao().size()==0) res+=" NENHUMA PUBLICAÇÃO, NENHUMA ORIENTAÇÃO\n";
+        else if(getPublicacao().size() == 0) res+=", NENHUMA PUBLICAÇÃO\n";
+        else if(getOrientacao().size() == 0) res+=", NENHUMA ORIENTAÇÃO\n"; 
+        for (int i = 0; i < producoes.size(); i++) {
+            if(producoes.elementAt(i) instanceof Publicacao) {
+                res+= "PUBLICAÇÃO: ";
             }
-            else if(getPublicacao().size() == 0) {
-                res+="NENHUMA PUBLICAÇÃO";
+            if(producoes.elementAt(i) instanceof Orientacao) {
+                res+= "ORIENTAÇÃO: ";
             }
-            else if(getOrientacao().size() == 0) {
-                res+="NENHUMA ORIENTAÇÃO";
-            }
-        } 
-        else {
-           for (int i = 0; i < producoes.size(); i++) {
-              if(producoes.elementAt(i) instanceof Publicacao) {
-                  res+= "PUBLICAÇÃO: ";
-              }
-              else if(producoes.elementAt(i) instanceof Orientacao) {
-                  res+= "ORIENTAÇÃO: ";
-              }
-              res+= producoes.elementAt(i);
-              if(i<producoes.size()-1) res+="\n ";
-           }
+            res+= producoes.elementAt(i);
+            res+="\n";
         }
         return res;
-    }
+        }
 }

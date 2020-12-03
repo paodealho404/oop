@@ -91,7 +91,7 @@ public class Menus {
                     sc.nextLine();
                     break;
                 case 3:
-                    menuPublicacao(admin, sc,lab);
+                    menuPublicacao(admin, sc, lab);
                     System.out.println("Pressione qualquer tecla para continuar...");
                     sc.nextLine();
                     break;
@@ -324,8 +324,8 @@ public class Menus {
                 else {
                     participantes.add(p);
                     proj = new Projeto(titulo, data_inicio, data_fim, agencia_financiadora, valor_financiado, objetivo, descricao, participantes);
-                    admin.addProjetoColaborador(proj, p);
                     admin.cadastroProjetoLab(proj, lab);
+                    admin.addProjetoColaborador(proj, p);
                 }
                 break;
             case 2:

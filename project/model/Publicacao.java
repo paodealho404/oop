@@ -35,12 +35,12 @@ public class Publicacao extends ProducaoAcademica{
     }
     @Override
     public String toString() {
-        String res = super.toString() + ", AUTORES: ";
+        String res = super.toString() + ", Autores: ";
         for (int i = 0; i < autores.size(); i++) {
                 res+=autores.elementAt(i).getNome();
                 if(i<autores.size()-1) res+=", ";
         }
-        res+=", CONFERÊNCIA: " + getConferencia() +", PROJETO RELACIONADO: "+ projeto.getTitulo();
+        res+=", Conferência: " + getConferencia() +", Projeto Relacionado: "+ projeto.getTitulo();
         return res;
     }
 }

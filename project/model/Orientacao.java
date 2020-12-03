@@ -13,11 +13,23 @@ public class Orientacao extends ProducaoAcademica{
     {
         this.alunos.add(a);
     }
+    public Professor getProfessor() {
+        return professor;
+    }
+    public Vector<Aluno> getAlunos() {
+        return alunos;
+    }
+    public void setProfessor(Professor professor) {
+        this.professor = professor;
+    }
+    public void setAlunos(Vector<Aluno> alunos) {
+        this.alunos = alunos;
+    }
     @Override
     public String toString() {
-        String res = super.toString() + "PROFESSOR: "+ professor.getNome()+ ", ALUNO(A)(OS)(AS): ";
+        String res = super.toString() + ", Professor Orientador: "+ professor.getNome()+ ", Orientandos: ";
         for (int i = 0; i < alunos.size(); i++) {
-            res+= alunos.elementAt(i);
+            res+= alunos.elementAt(i).getNome();
             if(i<alunos.size()-1) res+=", ";
         }
         return res;
