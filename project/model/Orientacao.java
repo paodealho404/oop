@@ -27,7 +27,7 @@ public class Orientacao extends ProducaoAcademica{
     }
     @Override
     public String toString() {
-        String res = super.toString() + ", Professor Orientador: "+ professor.getNome()+ ", Orientandos: ";
+        String res = "Orientação| " + super.toString() + ", Professor Orientador: "+ professor.getNome()+ ", Orientandos: ";
         for (int i = 0; i < alunos.size(); i++) {
             res+= alunos.elementAt(i).getNome();
             if(i<alunos.size()-1) res+=", ";

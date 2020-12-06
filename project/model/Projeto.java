@@ -1,5 +1,7 @@
 package project.model;
+
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.Vector;
 public class Projeto implements Comparable<Projeto>{
     private String titulo;
@@ -94,7 +96,7 @@ public class Projeto implements Comparable<Projeto>{
     }
     @Override
     public String toString() {
-        String res = "Titulo: " + getTitulo() + ", Status: " + getStatus() + ", Objetivo: "+ getObjetivo() + ", Descricao: " +
+        String res = "Projeto| Título: " + getTitulo() + ", Status: " + getStatus() + ", Objetivo: "+ getObjetivo() + ", Descricao: " +
         getDescricao() + ", Inicio: "+getDataInicio()+", Fim: " + getDataFim() + ", Participantes: "+ getParticipantes().size();
         return res;
     }
@@ -110,6 +112,28 @@ public class Projeto implements Comparable<Projeto>{
     @Override
     public int compareTo(Projeto a) {
         return this.getDataFim().compareTo(a.getDataFim());
+    }
+    public String relatorioProdutividade() {
+        String res = this.toString()+"\n"+"Nomes: ";
+        Vector<ProducaoAcademica> producoes = new Vector<ProducaoAcademica>();
+        producoes.addAll(this.getPublicacoes());
+        Vector<Colaborador> participantes = getParticipantes();
+
+        for (int i = 0; i < participantes.size(); i++) {
+            res += participantes.elementAt(i).getNome();
+            if(i!=participantes.size()-1) res+=",";
+            else res+="\n";
+        }
+        res+="Publicações: ";
+        if(publicacoes.size()==0) res+="Nenhuma";
+        else {
+            res+="\n";
+            Collections.sort(producoes, Collections.reverseOrder());
+            for (int i = 0; i < producoes.size(); i++) {
+                res+=producoes.elementAt(i)+"\n";
+             }
+        }
+        return res;
     }
 
 

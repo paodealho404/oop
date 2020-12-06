@@ -26,6 +26,8 @@ public class ProducaoAcademica implements Comparable<ProducaoAcademica>{
     }
     @Override
     public int compareTo(ProducaoAcademica x) {
-        return Integer.valueOf(this.anoPublicacao).compareTo(x.getAnoPublicacao());
+        Integer ano_prod1 = Integer.valueOf(this.getAnoPublicacao());
+        Integer ano_prod2 = Integer.valueOf(x.getAnoPublicacao());
+        return ano_prod1.compareTo(ano_prod2);
     }
 }

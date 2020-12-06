@@ -37,7 +37,7 @@ public class Administrador extends Usuario{
     }
     public boolean isProjectValid(Projeto p) {
         if(p.getValid() && p.getTitulo()!=null && p.getDataFim()!=null && p.getDataInicio()!=null
-        && p.getValorFinanciado()>=0 &&p.getAgenciaFinanciadora()!=null && p.getObjetivo()!=null && p.getDescricao()!=null && p.getParticipantes().size()>0) return true;
+        && p.getValorFinanciado()>=0 &&p.getAgenciaFinanciadora()!=null && !p.getObjetivo().isEmpty() && !p.getDescricao().isEmpty() && p.getParticipantes().size()>0) return true;
         return false;
     }
     public void mudarStatusProjeto(String novo, Projeto p) {
@@ -92,6 +92,7 @@ public class Administrador extends Usuario{
         if(p.getProjeto().getStatus().equals("Em andamento")) {
             if(!publicacoes.contains(p)){
                 publicacoes.add(p);
+                System.out.println("Publicação "+p.getTitulo()+" adicionada com sucesso");
                 lab.setPublicacoes(publicacoes);
                 addPublicacaoProjeto(p, p.getProjeto());
                 addPublicacaoColaboradores(p, p.getAutores());

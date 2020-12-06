@@ -50,18 +50,18 @@ public class Colaborador extends Usuario{
       String res = "Nome: " + super.getNome() + ", Email: "+ super.getEmail();
       return res;
    }
-   public String relatorioColaborador()
+   public String relatorioProdutividade()
    {
-      String res = toString() + ", Projetos Participados: ";
+      String res = toString() + "\nProjetos Participados: ";
       Vector<Projeto> projetosValidos = new Vector<Projeto>(getProjetosParticipados());
-      if(projetosValidos.size()==0) res+="NENHUM\n";
+      if(projetosValidos.size()==0) res+="Nenhum\n";
       else {
          res+="\n";
          Collections.sort(projetosValidos);
          Collections.reverse(projetosValidos);
          for (int i = 0; i < projetosValidos.size(); i++) {
-            res+= projetosValidos.elementAt(i);
-            res+=",\n";
+            res += projetosValidos.elementAt(i);
+            res +=",\n";
          }
       }
       return res;

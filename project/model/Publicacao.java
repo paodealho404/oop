@@ -35,7 +35,7 @@ public class Publicacao extends ProducaoAcademica{
     }
     @Override
     public String toString() {
-        String res = super.toString() + ", Autores: ";
+        String res = "Publicação| "+super.toString() + ", Autores: ";
         for (int i = 0; i < autores.size(); i++) {
                 res+=autores.elementAt(i).getNome();
                 if(i<autores.size()-1) res+=", ";

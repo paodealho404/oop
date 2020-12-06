@@ -13,24 +13,25 @@ public class Test {
         Colaborador colab1 = new Professor("Jose", "jose@gmail.com");
         Colaborador colab2 = new Aluno("Paulo", "paulo@gmail.com", "Graduação");
         Colaborador colab3 = new Aluno("Fabiana", "fabiana@gmail.com", "Mestrado");
-        Colaborador colab4 = new Aluno("Marcos", "marcos@gmail.com", "DOUTORADO");
+        Colaborador colab4 = new Aluno("Marcos", "marcos@gmail.com", "Doutorado");
         Colaborador colab5 = new Aluno("Vitor", "vitor@gmail.com", "Graduação");
         Colaborador colab6 = new Professor("Leonardo", "leo@gmail.com");
         Colaborador colab7 = new Aluno("Rosa", "rosa@gmail.com", "Graduação");
         Colaborador colab8 = new Aluno("Marta", "marta@uol.com.br", "Mestrado");
         Colaborador colab9 = new Aluno("Ruan", "ruan@ig.com.br", "Graduação");
 
-        Vector<Colaborador> colaboradores = lab.getColaboradores();
-        colaboradores.add(colab1);
-        colaboradores.add(colab2);
-        colaboradores.add(colab3);
-        colaboradores.add(colab4);
-        colaboradores.add(colab5);
-        colaboradores.add(colab6);
-        colaboradores.add(colab7);
-        colaboradores.add(colab8);
-        colaboradores.add(colab9);
-        lab.setColaboradores(colaboradores);
+        System.out.println("\n\nExecutando procedimentos...\n\n");
+        System.out.println("\n\nAdicionando colaboradores de teste ao laboratório");
+        
+        lab.addColaborador(colab1);
+        lab.addColaborador(colab2);
+        lab.addColaborador(colab3);
+        lab.addColaborador(colab4);
+        lab.addColaborador(colab5);
+        lab.addColaborador(colab6);
+        lab.addColaborador(colab7);
+        lab.addColaborador(colab8);
+        lab.addColaborador(colab9);
 
         Vector<Colaborador> grupo1 = new Vector<Colaborador>();
         Vector<Colaborador> grupo2 = new Vector<Colaborador>();
@@ -52,21 +53,20 @@ public class Test {
 
         LocalDate dataIni1 =  LocalDate.of(2000,02,10), dataFim1 = LocalDate.of(2000,03,10);
         LocalDate dataIni2 = LocalDate.of(2001,03,11), dataFim2 = LocalDate.of(2001,04,11);
-
         LocalDate dataIni3 = LocalDate.of(2002,12,04), dataFim3 = LocalDate.of(2002,05,13);
-        Projeto proj1 = new Projeto("BIOTECNOLOGIA", dataIni1, dataFim1, "CNPQ", 4800, "", "", grupo1);
-        Projeto proj2 = new Projeto("TECNOBIOLOGIA", dataIni2, dataFim2, "CNPQ", 4800, "", "", grupo2);
-        Projeto proj3 = new Projeto("USO DE PLANTAS", dataIni3, dataFim3, "CNPQ", 4800, "", "", grupo3);
+
+        Projeto proj1 = new Projeto("BIOTECNOLOGIA", dataIni1, dataFim1, "CNPQ", 4800, "objetivo", "descricao", grupo1);
+        Projeto proj2 = new Projeto("TECNOBIOLOGIA", dataIni2, dataFim2, "CNPQ", 4800, "objetivo", "descricao", grupo2);
+        Projeto proj3 = new Projeto("USO DE PLANTAS", dataIni3, dataFim3, "CNPQ", 4800, "objetivo", "descricao", grupo3);
 
 
-        System.out.println("\n\nExecutando procedimentos...\n\n");
-        System.out.println("Adicionando os projetos ao laboratório");
+        System.out.println("Adicionando os projetos de teste ao laboratório\n");
         admin.cadastroProjetoLab(proj1, lab);
         admin.cadastroProjetoLab(proj2, lab);
         admin.cadastroProjetoLab(proj3, lab);
 
 
-        System.out.println("Tentando adicionar o projeto aos colaboradores");
+        System.out.println("\n\nTentando adicionar o projeto aos colaboradores\n");
         admin.addProjetoColaboradores(proj1, proj1.getParticipantes());
         admin.addProjetoColaboradores(proj2, proj2.getParticipantes());
         admin.addProjetoColaboradores(proj3, proj3.getParticipantes());
@@ -92,32 +92,46 @@ public class Test {
 
 
         //É pra dar certo
+        
         Publicacao p1 = new Publicacao("PLANTINHAS1","CONFERENCIA 1", 2000, lab.getProjeto("BIOTECNOLOGIA"), autores1);
         Publicacao p2 = new Publicacao("PLANTINHAS2","CONFERENCIA 2", 2001, lab.getProjeto("TECNOBIOLOGIA"), autores2);
-        Publicacao p3 = new Publicacao("FALHO", "CONFERENCIA 3", 2010, lab.getProjeto("USO DE PLANTAS"), autores2);
+        Publicacao p3 = new Publicacao("NÃO É MAIS SOBRE PLANTAS", "CONFERENCIA 3", 2010, lab.getProjeto("USO DE PLANTAS"), autores2);
+        Publicacao p4 = new Publicacao("É SOBRE PLANTAS", "CONFERENCIA 4", 2009, lab.getProjeto("USO DE PLANTAS"), autores2);
 
         Orientacao o1 = new Orientacao("DISSERTAÇÃO", 2000, (Professor)lab.getColaborador("Jose"), grupoOrientandos1);
         Orientacao o2 = new Orientacao("DISSERTAÇÃO", 2001, (Professor)lab.getColaborador("Leonardo"), grupoOrientandos2);
         Orientacao o3 = new Orientacao("ANÁLISE", 2002, (Professor)lab.getColaborador("Jose"), grupoOrientandos2);
         
-        System.out.println("Mudando estados dos projetos");
+
+        System.out.println("\n\nIniciando próximos testes\n\nMudando estados dos projetos criados anteriormente");
         admin.mudarStatusProjeto("Em andamento", lab.getProjeto("BIOTECNOLOGIA"));
         admin.mudarStatusProjeto("Em andamento", lab.getProjeto("TECNOBIOLOGIA"));
         
-        //É pra dar certo
-        System.out.println("Tentando adicionar publicação 1 e 2");
+        //É pra dar certo pois ambas as publicações estão associadas a projetos válidos e em andamento
+        System.out.println("\nTentando adicionar Publicações de Teste");
         admin.addPublicacaoLabPesquisa(lab, p1);
         admin.addPublicacaoLabPesquisa(lab, p2);
 
-        //É pra dar errado, pois p3 tem um projeto em elaboração
+        //É pra dar errado, pois p3 está associada a um projeto em elaboração
         System.out.println("Tentando adicionar publicação 3");
         admin.addPublicacaoLabPesquisa(lab, p3);
         
+        //Agora tornando o projeto em andamento para vincular corretamente
+        System.out.println("Alterando estado do projeto para tentar vincular publicação");
+        admin.mudarStatusProjeto("Em andamento", lab.getProjeto("USO DE PLANTAS"));
+        System.out.println("\nTentando adicionar publicação 3 novamente");
+        admin.addPublicacaoLabPesquisa(lab, p3);
+
+        System.out.println("\nTentando adicionar publicação 4");
+        admin.addPublicacaoLabPesquisa(lab, p4);
+
+        //Adicionando orientações de teste
+        System.out.println("\nAdicionando orientações de teste");
         admin.addOrientacaoProfessor(o1, o1.getProfessor());
         admin.addOrientacaoProfessor(o2, o2.getProfessor());
         admin.addOrientacaoProfessor(o3, o3.getProfessor());
         //Concluindo os projetos
-        System.out.println("\n\nConcluindo projetos...\n");
+        System.out.println("\n\nConcluindo os projetos 1 e 2...\n");
         admin.mudarStatusProjeto("Concluído", proj1);
         admin.mudarStatusProjeto("Concluído", proj2);
 
@@ -128,25 +142,31 @@ public class Test {
         System.out.println(lab.getProjeto("USO DE PLANTAS")); 
 
         //Testando os colaboradores inseridos
-        System.out.println("\n\nTestando os colaboradores inseridos\n\n");
+        System.out.println("\n\nImprimindo todos os colaboradores inseridos no laboratório\n\n");
         lab.getColaboradores().forEach(colaborador->{
             System.out.println(colaborador);
         });
 
         //Testando as publicacões inseridas
-        System.out.println("\n\nTestando as publicacões inseridas\n\n");
+        System.out.println("\n\nImprimindo todas as publicacões inseridas no laboratório\n\n");
         lab.getPublicacoes().forEach(publicacao->{
             System.out.println(publicacao);
         });
 
-        System.out.println("TOTAL DE PUBLICACOES NO FINAL: "+ lab.getPublicacoes().size());
-
+        System.out.println("\n\nTOTAL DE PUBLICACOES NO FINAL: "+ lab.getPublicacoes().size());
+        System.out.println("TOTAL DE ORIENTAÇÕES NO FINAL: "+ lab.getNumOrientacoes());
         //Relatório laboratório
         System.out.println("\n\nRelatório de Produtividade do laboratório\n\n"+lab.relatorioProdutividade());
 
         //Relatório colaboradores
        lab.getColaboradores().forEach(colab->{
-        System.out.println("\n\nRelatório de Produtividade do Colaborador\n"+ colab.relatorioColaborador());
+        System.out.println("\n\nRelatório de Produtividade do colaborador "+colab.getNome()+"\n"+ colab.relatorioProdutividade());
        });
+
+       //Relatório dos Projetos
+       lab.getProjetos().forEach(projeto->{
+           System.out.println("\n\nRelatório de Produção Academica do Projeto "+ projeto.getTitulo()+"\n"+projeto.relatorioProdutividade());
+       });
+
     }
 }

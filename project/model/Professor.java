@@ -20,27 +20,34 @@ public class Professor extends Colaborador{
         return "Professor| "+super.toString();
     }
     @Override
-    public String relatorioColaborador() {
-        String res = super.relatorioColaborador();
-        Vector<ProducaoAcademica> producoes = new Vector<ProducaoAcademica>();
-        producoes.addAll(super.getPublicacao());
+    public String relatorioProdutividade() {
+        String res = super.relatorioProdutividade();
+        Vector<ProducaoAcademica> producoes = new Vector<ProducaoAcademica>(super.getPublicacao());   
         producoes.addAll(getOrientacao());
-        Collections.sort(producoes);
-        Collections.reverse(producoes);
-        res+="Produção Academica:\n";
-        if(getPublicacao().size() == 0 && getOrientacao().size()==0) res+=" NENHUMA PUBLICAÇÃO, NENHUMA ORIENTAÇÃO\n";
-        else if(getPublicacao().size() == 0) res+=", NENHUMA PUBLICAÇÃO\n";
-        else if(getOrientacao().size() == 0) res+=", NENHUMA ORIENTAÇÃO\n"; 
-        for (int i = 0; i < producoes.size(); i++) {
-            if(producoes.elementAt(i) instanceof Publicacao) {
-                res+= "PUBLICAÇÃO: ";
-            }
-            if(producoes.elementAt(i) instanceof Orientacao) {
-                res+= "ORIENTAÇÃO: ";
-            }
-            res+= producoes.elementAt(i);
+        res+= "Produção Academica associada: ";    
+        if(producoes.size()==0) res+="Nenhuma";
+        else {
             res+="\n";
+            Collections.sort(producoes, Collections.reverseOrder());
+            for (int i = 0; i < producoes.size(); i++) {
+                res += producoes.elementAt(i)+"\n";
+            }
         }
+        // Collections.reverse(producoes);
+        // res+="Produção Academica:\n";
+        // if(getPublicacao().size() == 0 && getOrientacao().size()==0) res+=" Nenhuma Publicação, Nenhuma orientação\n";
+        // else if(getPublicacao().size() == 0) res+=", Nenhuma Publicação\n";
+        // else if(getOrientacao().size() == 0) res+=", Nenhuma Orientação\n"; 
+        // for (int i = 0; i < producoes.size(); i++) {
+        //     if(producoes.elementAt(i) instanceof Publicacao) {
+        //         res+= "Publicação: ";
+        //     }
+        //     if(producoes.elementAt(i) instanceof Orientacao) {
+        //         res+= "Orientação: ";
+        //     }
+        //     res+= producoes.elementAt(i);
+        //     res+="\n";
+        // }
         return res;
         }
 }
