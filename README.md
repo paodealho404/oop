@@ -2,7 +2,7 @@
 ## Este repositório é destinado à disciplina de Projeto de Software ministrada no Instituto de Computação - UFAL
 
 ## Os diretórios com prefixo "wk" são destinados às resoluções das atividades
-## Raíz do Projeto de "Sistema de Produtividade Acadêmica" da disciplina de Projeto de Software disponível em: [project](https://github.com/paodealho404/oop/tree/master/project) 🎒🎓📊 \\\
+## Raíz do Projeto de "Sistema de Produtividade Acadêmica" da disciplina de Projeto de Software disponível em: [project](https://github.com/paodealho404/oop/tree/master/project) 🎒🎓📊 
 ### Para executá-lo, basta clonar o repositório e utilizar a sua IDE de preferência para executar a classe Main,disponível em: <a href="https://github.com/paodealho404/oop/tree/master/project/app">Main</a>
 ### Para acompanhar uma sequência de testes estáticos é possível executar também uma classe de Teste, disponível em: <a href="https://github.com/paodealho404/oop/tree/master/project/app">Test</a>
 ## Interpretações e Soluções Utilizadas:
