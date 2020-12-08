@@ -52,9 +52,10 @@ public class Test {
         grupo3.add(colab9);
 
         LocalDate dataIni1 =  LocalDate.of(2000,02,10), dataFim1 = LocalDate.of(2000,03,10);
-        LocalDate dataIni2 = LocalDate.of(2001,03,11), dataFim2 = LocalDate.of(2001,04,11);
-        LocalDate dataIni3 = LocalDate.of(2002,12,04), dataFim3 = LocalDate.of(2002,05,13);
+        LocalDate dataIni2 = LocalDate.of(2001,03,11), dataFim2 = LocalDate.of(2011,04,11);
+        LocalDate dataIni3 = LocalDate.of(2001,12,04), dataFim3 = LocalDate.of(2009,05,13);
 
+        
         Projeto proj1 = new Projeto("BIOTECNOLOGIA", dataIni1, dataFim1, "CNPQ", 4800, "objetivo", "descricao", grupo1);
         Projeto proj2 = new Projeto("TECNOBIOLOGIA", dataIni2, dataFim2, "CNPQ", 4800, "objetivo", "descricao", grupo2);
         Projeto proj3 = new Projeto("USO DE PLANTAS", dataIni3, dataFim3, "CNPQ", 4800, "objetivo", "descricao", grupo3);
@@ -109,21 +110,21 @@ public class Test {
         
         //É pra dar certo pois ambas as publicações estão associadas a projetos válidos e em andamento
         System.out.println("\nTentando adicionar Publicações de Teste");
-        admin.addPublicacaoLabPesquisa(lab, p1);
-        admin.addPublicacaoLabPesquisa(lab, p2);
+        admin.addPublicacaoLabPesquisa(p1, lab);
+        admin.addPublicacaoLabPesquisa(p2, lab);
 
         //É pra dar errado, pois p3 está associada a um projeto em elaboração
         System.out.println("Tentando adicionar publicação 3");
-        admin.addPublicacaoLabPesquisa(lab, p3);
+        admin.addPublicacaoLabPesquisa(p3, lab);
         
         //Agora tornando o projeto em andamento para vincular corretamente
         System.out.println("Alterando estado do projeto para tentar vincular publicação");
         admin.mudarStatusProjeto("Em andamento", lab.getProjeto("USO DE PLANTAS"));
         System.out.println("\nTentando adicionar publicação 3 novamente");
-        admin.addPublicacaoLabPesquisa(lab, p3);
+        admin.addPublicacaoLabPesquisa(p3, lab);
 
         System.out.println("\nTentando adicionar publicação 4");
-        admin.addPublicacaoLabPesquisa(lab, p4);
+        admin.addPublicacaoLabPesquisa(p4, lab);
 
         //Adicionando orientações de teste
         System.out.println("\nAdicionando orientações de teste");

@@ -31,7 +31,14 @@ public class Publicacao extends ProducaoAcademica{
     }
     public void addAutor(Colaborador autor)
     {
-        autores.add(autor);
+        if(autores.contains(autor)) {
+            System.out.println("Autor já vinculado à publicação");
+            return;
+        } else {
+            System.out.println("Autor vinculado com sucesso");
+            autores.add(autor);
+        }
+        
     }
     @Override
     public String toString() {

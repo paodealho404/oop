@@ -11,7 +11,14 @@ public class Orientacao extends ProducaoAcademica{
     }
     public void addAluno(Aluno a)
     {
-        this.alunos.add(a);
+        if(alunos.contains(a)){
+            System.out.println("Aluno já está associado à orientação");
+            return;
+        }
+        else {
+            System.out.println("Aluno adicionado com sucesso");
+            this.alunos.add(a);
+        }
     }
     public Professor getProfessor() {
         return professor;

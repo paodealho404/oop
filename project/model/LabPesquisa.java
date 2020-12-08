@@ -106,9 +106,14 @@ public class LabPesquisa {
         else return null;
     }
     public boolean hasProfessor() {
-        System.out.println("Verificando professores... ");
         for (int i = 0; i < colaboradores.size(); i++) {
             if(colaboradores.elementAt(i) instanceof Professor) return true;
+        }
+        return false;
+    }
+    public boolean hasAluno() {
+        for (int i = 0; i < colaboradores.size(); i++) {
+            if(colaboradores.elementAt(i) instanceof Aluno) return true;
         }
         return false;
     }

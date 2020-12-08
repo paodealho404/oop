@@ -36,8 +36,8 @@ public class Administrador extends Usuario{
         }
     }
     public boolean isProjectValid(Projeto p) {
-        if(p.getValid() && p.getTitulo()!=null && p.getDataFim()!=null && p.getDataInicio()!=null
-        && p.getValorFinanciado()>=0 &&p.getAgenciaFinanciadora()!=null && !p.getObjetivo().isEmpty() && !p.getDescricao().isEmpty() && p.getParticipantes().size()>0) return true;
+        if(p.getValid() && !p.getTitulo().isEmpty() && p.getDataFim()!=null && p.getDataInicio()!=null
+        && p.getValorFinanciado()>=0 && !p.getAgenciaFinanciadora().isEmpty() && !p.getObjetivo().isEmpty() && !p.getDescricao().isEmpty() && p.getParticipantes().size()>0) return true;
         return false;
     }
     public void mudarStatusProjeto(String novo, Projeto p) {
@@ -60,16 +60,16 @@ public class Administrador extends Usuario{
                 }
             }
             p.setStatus(novo);
-            System.out.println("Mudança realizada com sucesso");
+            System.out.println("Mudança realizada com sucesso!");
         }
         else {
-            System.out.println("Não foi possível alterar o status do projeto. Ainda há informações em falta no projeto");
+            System.out.println("Não foi possível alterar o status do projeto. Operação negada");
         }
         }
         else if(novo.equals("Concluído")) {
             if(p.getPublicacoes().size()>0) {
                 p.setStatus(novo);
-                System.out.println("Mudança realizada com sucesso");
+                System.out.println("Mudança realizada com sucesso!");
             } 
             else System.out.println("Não foi possível alterar o status do projeto. Ainda não há publicações vinculadas a esse projeto");
         }
@@ -87,12 +87,12 @@ public class Administrador extends Usuario{
         publicacoes.add(pb);
         proj.setPublicacoes(publicacoes);
     }
-    public void addPublicacaoLabPesquisa(LabPesquisa lab, Publicacao p) {
+    public void addPublicacaoLabPesquisa(Publicacao p, LabPesquisa lab) {
         Vector<Publicacao> publicacoes = lab.getPublicacoes();
         if(p.getProjeto().getStatus().equals("Em andamento")) {
             if(!publicacoes.contains(p)){
                 publicacoes.add(p);
-                System.out.println("Publicação "+p.getTitulo()+" adicionada com sucesso");
+                System.out.println("Publicação "+p.getTitulo()+" adicionada com sucesso!");
                 lab.setPublicacoes(publicacoes);
                 addPublicacaoProjeto(p, p.getProjeto());
                 addPublicacaoColaboradores(p, p.getAutores());
@@ -103,7 +103,7 @@ public class Administrador extends Usuario{
             
         }
         else {
-            System.out.println("Projeto não está em fase de andamento");
+            System.out.println("Não foi possível adicionar a Publicação. Projeto não está em fase de andamento");
         }
     }
     public void addPublicacaoColaboradores(Publicacao p, Vector<Colaborador> colaboradores) {
@@ -117,7 +117,6 @@ public class Administrador extends Usuario{
         Vector<Publicacao> colabPublicacao = c.getPublicacao();
         if(!colabPublicacao.contains(p)) {
             colabPublicacao.add(p);
-            c.setPublicacao(colabPublicacao);
         }
     }
     public void addOrientacaoProfessor(Orientacao o, Professor p) {
@@ -135,6 +134,16 @@ public class Administrador extends Usuario{
         });
         p.setParticipantes(novosColaboradores);
     }
+    public void addColaboradorProjeto(Colaborador c, Projeto p) {
+        if(p.getParticipantes().contains(c)) {
+            System.out.println("Colaborador já está no projeto");
+            return;
+        }
+        else {
+            p.getParticipantes().add(c);
+            System.out.println("Colaborador adicionado com sucesso ao Projeto!");
+        }
+    }
     public void addProjetoColaborador(Projeto p, Colaborador c) {
         if(!p.getStatus().equals("Em elaboração")) {
             System.out.println("Não foi possível inserir colaborador. Projeto não está mais em fase de elaboração");
@@ -142,7 +151,7 @@ public class Administrador extends Usuario{
         }
         Vector<Projeto> projetos = c.getProjetos();
         if(projetos.contains(p)) {
-            // System.out.println("Colaborador já possui o projeto na sua lista");
+            System.out.println("Colaborador já possui o projeto na sua lista");
             return;
         } 
         else {
@@ -153,19 +162,23 @@ public class Administrador extends Usuario{
                     else {
                         projetos.add(p);
                         c.setProjetos(projetos);
-                        System.out.println("Projeto adicionado com sucesso ao colaborador");
+                        System.out.println("Projeto adicionado com sucesso ao colaborador!");
+                        addColaboradorProjeto(c, p);
+                        
                     }
                 }
                 else {
                     projetos.add(p);
                     c.setProjetos(projetos);
-                    System.out.println("Projeto adicionado com sucesso ao colaborador");
+                    System.out.println("Projeto adicionado com sucesso ao colaborador!");
+                    addColaboradorProjeto(c, p);
                 }
             }
             else {
                 projetos.add(p);
                 c.setProjetos(projetos);
-                System.out.println("Projeto adicionado com sucesso ao colaborador");
+                System.out.println("Projeto adicionado com sucesso ao colaborador!");
+                addColaboradorProjeto(c, p);
             }
             
         }

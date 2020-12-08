@@ -42,6 +42,7 @@ public class Menus {
                 senha = sc.nextLine();
             }
         }
+        sc.close();
     }
     public static void menuCriarLab(Administrador admin, Scanner sc) {
         MenuUtil.limpa();
@@ -69,19 +70,17 @@ public class Menus {
             opt = Integer.parseInt(sc.nextLine());
             switch(opt) {
                 case 1:
-                    SubMenus.menuLabPesquisaAddColaborador(admin, sc, lab);
+                    SubMenus.menuLabPesquisaAdicionarColaborador(admin, sc, lab);
                     System.out.println("Pressione qualquer tecla para continuar...");
                     sc.nextLine();
                     break;
                 case 2:
-                    SubMenus.menuLabPesquisaAddProjetos(admin, sc, lab);
+                    SubMenus.menuLabPesquisaAdicionarProjetos(admin, sc, lab);
                     System.out.println("Pressione qualquer tecla para continuar...");
                     sc.nextLine();
                     break;
                 case 3:
                     SubMenus.menuProducaoAcademica(admin, sc, lab);
-                    System.out.println("Pressione qualquer tecla para continuar...");
-                    sc.nextLine();
                     break;
                 case 4:
                     SubMenus.menuExibicaoProjetos(admin, sc, lab);
@@ -119,10 +118,9 @@ public class Menus {
             return;
         }
         System.out.println("Lista de Colaboradores vinculados ao Laboratório de Pesquisa:");
-        lab.getColaboradores().forEach((colaborador)->{
-            int i=0;
-            System.out.println(i+") "+ colaborador);
-        });
+        for (int i = 0; i < lab.getColaboradores().size(); i++) {
+            System.out.println(i+") "+ lab.getColaborador(i));
+        }
         System.out.println("Para gerar o relatório de produção acadêmica selecione um colaborador: ");
         int opt = Integer.parseInt(sc.nextLine());
         if(opt < lab.getColaboradores().size()){    
@@ -135,15 +133,14 @@ public class Menus {
     }
     public static void menuRelatorioProjeto(LabPesquisa lab, Scanner sc) {
         MenuUtil.limpa();
-        if(lab.getColaboradores().size()==0) {
+        if(lab.getProjetos().size()==0) {
             System.out.println("Não há Projetos cadastrados neste Laboratório de Pesquisa");
             return;
         }
         System.out.println("Lista de Projetos vinculados ao Laboratório de Pesquisa");
-        lab.getProjetos().forEach((projeto)->{
-            int i=0;
-            System.out.println(i+") "+ projeto);
-        });
+        for (int i = 0; i < lab.getProjetos().size(); i++) {
+                System.out.println(i+") "+ lab.getProjeto(i));
+        }
         System.out.println("Para gerar o relatório de produção acadêmica selecione um projeto: ");
         int opt = Integer.parseInt(sc.nextLine());
         if( opt < lab.getProjetos().size()) {

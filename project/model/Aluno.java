@@ -37,17 +37,6 @@ public class Aluno extends Colaborador{
                 res+=producoes.elementAt(i)+"\n";
             }
         }
-           
-        //    
-        //    System.out.println("Ordenando aluno");
-        //    Collections.sort(producoes);
-        //    Collections.reverse(producoes);
-
-        //    for (int i = 0; i < publicacao.size(); i++) {
-        //       res+= "Publicação: ";
-        //       res+= publicacao.elementAt(i);
-        //       if(i<publicacao.size()-1) res+=", \n";
-        //    }
         return res;
     }
     

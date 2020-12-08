@@ -33,21 +33,6 @@ public class Professor extends Colaborador{
                 res += producoes.elementAt(i)+"\n";
             }
         }
-        // Collections.reverse(producoes);
-        // res+="Produção Academica:\n";
-        // if(getPublicacao().size() == 0 && getOrientacao().size()==0) res+=" Nenhuma Publicação, Nenhuma orientação\n";
-        // else if(getPublicacao().size() == 0) res+=", Nenhuma Publicação\n";
-        // else if(getOrientacao().size() == 0) res+=", Nenhuma Orientação\n"; 
-        // for (int i = 0; i < producoes.size(); i++) {
-        //     if(producoes.elementAt(i) instanceof Publicacao) {
-        //         res+= "Publicação: ";
-        //     }
-        //     if(producoes.elementAt(i) instanceof Orientacao) {
-        //         res+= "Orientação: ";
-        //     }
-        //     res+= producoes.elementAt(i);
-        //     res+="\n";
-        // }
         return res;
         }
 }
